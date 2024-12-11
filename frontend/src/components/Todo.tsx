@@ -72,11 +72,12 @@ const Todo: React.FC = () => {
         const response = await updateTodoAPI(editingTodo._id!, {
           task: inputValue,
         });
+        console.log(response)
         if (response.data.success) {
           setTodos((prevTodos) =>
             prevTodos.map((todo) =>
               todo._id === editingTodo._id
-                ? { ...todo, text: inputValue }
+                ? { ...todo, task: inputValue }
                 : todo
             )
           );

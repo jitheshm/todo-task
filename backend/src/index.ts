@@ -12,7 +12,12 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors())
+const corsOptions = {
+  origin: process.env.FRONTENT_URL, // Frontend URL
+  credentials: true, // Allow cookies to be sent
+};
+
+app.use(cors(corsOptions));
 
 dbConnect();
 

@@ -7,7 +7,8 @@ class TodoController implements ITodoController {
   async addTodo(req: Request, res: Response) {
     try {
       let { task } = req.body;
-      const decode = verifyToken(req.headers.authorization as string);
+      console.log(req.cookies.token)
+      const decode = verifyToken(req.cookies.token as string);
       if (!decode) {
         return res.status(401).json({ error: "Unauthorized" });
       }
@@ -21,19 +22,22 @@ class TodoController implements ITodoController {
     }
   }
 
-  updateTodoStatus(req: Request, res: Response) {
+  async updateTodoStatus(req: Request, res: Response) {
     try {
       let { id } = req.params;
-      let { status } = req.body;
-      const decode = verifyToken(req.headers.authorization as string);
+      let { completed } = req.body;
+      console.log(completed)
+      const decode = verifyToken(req.cookies.token as string);
       if (!decode) {
         return res.status(401).json({ error: "Unauthorized" });
       }
-      const todo = TodoModel.findOneAndUpdate(
-        { userId: decode.id, taskId: new mongoose.Schema.Types.ObjectId(id) },
-        { status },
+      console.log(decode.id)
+      const todo =await TodoModel.findOneAndUpdate(
+        { userId: decode.id, _id: new mongoose.Types.ObjectId(id) },
+        { completed:completed },
         { new: true }
       );
+      console.log(todo)
       res
         .status(200)
         .json({ success: true, message: "todo updated successfully" });
@@ -42,16 +46,16 @@ class TodoController implements ITodoController {
     }
   }
 
-  updateTodo(req: Request, res: Response) {
+  async updateTodo(req: Request, res: Response) {
     try {
       let { id } = req.params;
       let { task } = req.body;
-      const decode = verifyToken(req.headers.authorization as string);
+      const decode = verifyToken(req.cookies.token as string);
       if (!decode) {
         return res.status(401).json({ error: "Unauthorized" });
       }
-      const todo = TodoModel.findOneAndUpdate(
-        { userId: decode.id, taskId: new mongoose.Schema.Types.ObjectId(id) },
+      const todo = await TodoModel.findOneAndUpdate(
+        { userId: decode.id, _id: new mongoose.Types.ObjectId(id) },
         { task },
         { new: true }
       );
@@ -63,16 +67,16 @@ class TodoController implements ITodoController {
     }
   }
 
-  deleteTodo(req: Request, res: Response) {
+  async deleteTodo(req: Request, res: Response) {
     try {
       let { id } = req.params;
-      const decode = verifyToken(req.headers.authorization as string);
+      const decode = verifyToken(req.cookies.token as string);
       if (!decode) {
         return res.status(401).json({ error: "Unauthorized" });
       }
-      const todo = TodoModel.findOneAndDelete({
+      const todo = await TodoModel.findOneAndDelete({
         userId: decode.id,
-        taskId: new mongoose.Schema.Types.ObjectId(id),
+        _id: new mongoose.Types.ObjectId(id),
       });
       res
         .status(200)

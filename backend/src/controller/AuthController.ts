@@ -32,22 +32,22 @@ class AuthController implements IAuthController {
       const userExist = await UserModel.findOne({ email: email });
       if (!userExist)
         return res
-          .status(409)
+          .status(401)
           .json({ success: false, message: "email or password is incorrect" });
 
       const isMatch = await verifyPassword(password, userExist.password);
       if (!isMatch)
         return res
-          .status(409)
+          .status(401)
           .json({ success: false, message: "email or password is incorrect" });
 
-      const token=generateToken(userExist._id)
-      res.cookie("todo-token",token)
+      const token = generateToken(userExist._id);
+      res.cookie("token", token, { sameSite: "lax"});
       res
         .status(200)
         .json({ success: true, message: "user login successfully" });
     } catch (error) {
-      console.log(error)
+      console.log(error);
       res.status(500).json({ success: false, message: "user login failed" });
     }
   }
