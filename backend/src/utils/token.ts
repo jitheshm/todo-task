@@ -6,6 +6,10 @@ export const generateToken=(id:Types.ObjectId)=>{
     return jwt.sign({id},secret,{expiresIn:"1h"})
 }
 
-export const decryptToken=(token:string)=>{
-    return jwt.verify(token,secret) as jwt.JwtPayload
-}
+export const verifyToken = (token: string): jwt.JwtPayload|null => {
+    try {
+        return jwt.verify(token, secret) as jwt.JwtPayload;
+    } catch (error) {
+        return null
+    }
+};
