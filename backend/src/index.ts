@@ -6,11 +6,12 @@ import todoRoute from "./routes/todoRoute";
 import cookieParser from "cookie-parser";
 import path from 'path'
 import cors from 'cors'
-
+import morgan from 'morgan'
 import dbConnect from "./config/db/dbConnect";
 
 const app = express();
 
+app.use(morgan('dev'));
 app.use(express.json());
 app.use(cookieParser());
 const corsOptions = {
