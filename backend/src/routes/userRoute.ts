@@ -5,6 +5,6 @@ import UserController from "../controller/UserController";
 const router = Router();
 const userController: IUserController = new UserController();
 
-router.get("/signup", userController.signup);
+router.post("/signup", userController.signup);
 
 export default router;

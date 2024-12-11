@@ -12,7 +12,7 @@ app.use(cookieParser())
 
 dbConnect()
 
-app.use('/',userRoute)
+app.use('/api/user',userRoute)
 
 
 
