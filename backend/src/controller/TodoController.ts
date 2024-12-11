@@ -4,7 +4,7 @@ import { verifyToken } from "../utils/token";
 import ITodoController from "../interfaces/ITodoController";
 import mongoose from "mongoose";
 class TodoController implements ITodoController {
-  addTodo(req: Request, res: Response) {
+  async addTodo(req: Request, res: Response) {
     try {
       let { task } = req.body;
       const decode = verifyToken(req.headers.authorization as string);
@@ -12,10 +12,10 @@ class TodoController implements ITodoController {
         return res.status(401).json({ error: "Unauthorized" });
       }
       const todo = new TodoModel({ task, userId: decode.id });
-      todo.save();
+      await todo.save();
       res
         .status(200)
-        .json({ success: true, message: "todo added successfully" });
+        .json({ success: true, message: "todo added successfully",data:todo });
     } catch (error) {
       res.status(500).json({ success: false, message: "todo add failed" });
     }
