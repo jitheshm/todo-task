@@ -1,5 +1,5 @@
 import express from 'express'
-import userRoute from './routes/userRoute'
+import authRoute from './routes/authRoute'
 import cookieParser from 'cookie-parser'
 import dotenv from 'dotenv'
 dotenv.config();
@@ -12,7 +12,7 @@ app.use(cookieParser())
 
 dbConnect()
 
-app.use('/api/user',userRoute)
+app.use('/api/auth',authRoute)
 
 
 

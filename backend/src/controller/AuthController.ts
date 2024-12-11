@@ -1,9 +1,9 @@
-import IUserController from "../interfaces/IUserController";
+import IAuthController from "../interfaces/IAuthController";
 import { Request, Response } from "express";
 import UserModel from "../models/UserModel";
 import { hashPassword } from "../utils/bycrypt";
 
-class UserController implements IUserController {
+class AuthController implements IAuthController {
   signup = async (req: Request, res: Response) => {
     try {
       let { email, password } = req.body;
@@ -26,4 +26,4 @@ class UserController implements IUserController {
   };
 }
 
-export default UserController;
+export default AuthController;

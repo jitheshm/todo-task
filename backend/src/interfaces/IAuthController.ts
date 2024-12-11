@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
-interface IUserController {
+interface IAuthController {
   signup: (req: Request, res: Response) => void;
 }
 
-export default IUserController;
+export default IAuthController;
