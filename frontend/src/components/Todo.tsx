@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Trash2, Edit, Check } from "lucide-react";
 import ITodo from "../interfaces/ITodo";
 import {
   addTodoAPI,
   deleteTodoAPI,
+  fetchTodoAPI,
   updateTodoAPI,
   updateTodoStatusAPI,
 } from "../api/todo";
@@ -12,6 +13,12 @@ const Todo: React.FC = () => {
   const [todos, setTodos] = useState<ITodo[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
   const [editingTodo, setEditingTodo] = useState<ITodo | null>(null);
+
+  useEffect(() => {
+    fetchTodoAPI().then((res) => {
+      setTodos(res.data.data);
+    });
+  }, []);
 
   const addTodo = async (): Promise<void> => {
     try {
@@ -36,6 +43,11 @@ const Todo: React.FC = () => {
   // Delete todo
   const deleteTodo = async (id: string): Promise<void> => {
     try {
+      const isConfirmed = window.confirm(
+        "Are you sure you want to delete this To-Do?"
+      );
+      if (!isConfirmed) return; // If the user cancels, exit the function
+
       await deleteTodoAPI(id);
       setTodos((prevTodos) => prevTodos.filter((todo) => todo._id !== id));
     } catch (error) {
@@ -72,7 +84,7 @@ const Todo: React.FC = () => {
         const response = await updateTodoAPI(editingTodo._id!, {
           task: inputValue,
         });
-        console.log(response)
+        console.log(response);
         if (response.data.success) {
           setTodos((prevTodos) =>
             prevTodos.map((todo) =>

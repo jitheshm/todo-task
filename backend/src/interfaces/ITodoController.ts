@@ -4,5 +4,6 @@ interface ITodoController{
     updateTodoStatus(req: Request, res: Response): void
     updateTodo(req: Request, res: Response): void
     deleteTodo(req: Request, res: Response): void
+    fetchTodo(req: Request, res: Response): void
 }
 export default ITodoController

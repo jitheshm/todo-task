@@ -85,6 +85,20 @@ class TodoController implements ITodoController {
       res.status(500).json({ success: false, message: "todo deletion failed" });
     }
   }
+
+  async fetchTodo(req: Request, res: Response) {
+    try {
+      const decode = verifyToken(req.cookies.token as string);
+      if (!decode) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+      const todos=await TodoModel.find({ userId: decode.id })
+      res.status(200).json({ success: true, message: "todo fetch successfully",data:todos });
+        
+    } catch (error) {
+      res.status(500).json({ success: false, message: "todo fetch failed" });
+    }
+  }
 }
 
 export default TodoController;

@@ -23,3 +23,8 @@ export const updateTodoStatusAPI = async (
 ): Promise<AxiosResponse> => {
   return await axiosInstance.put(`/task/todos/${id}/status`, todoData);
 }
+
+
+export const fetchTodoAPI = async (): Promise<AxiosResponse> => {
+  return await axiosInstance.get("/task/todos");
+};
