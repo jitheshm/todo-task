@@ -2,7 +2,7 @@ import IAuthController from "../interfaces/IAuthController";
 import { Request, Response } from "express";
 import UserModel from "../models/UserModel";
 import { hashPassword, verifyPassword } from "../utils/bycrypt";
-import { generateToken } from "../utils/token";
+import { generateToken, verifyToken } from "../utils/token";
 
 class AuthController implements IAuthController {
   async signup(req: Request, res: Response) {
@@ -49,6 +49,21 @@ class AuthController implements IAuthController {
     } catch (error) {
       console.log(error);
       res.status(500).json({ success: false, message: "user login failed" });
+    }
+  }
+
+  async verify(req:Request,res:Response){
+    try {
+      const decode = verifyToken(req.cookies.token as string);
+      if (!decode) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+      else{
+        return res.status(200).json({success:"true"})
+      }
+      
+    } catch (error) {
+      
     }
   }
 }
