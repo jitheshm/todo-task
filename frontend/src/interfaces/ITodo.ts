@@ -1,5 +1,6 @@
 export default interface ITodo {
-    _id?:string;
-    task: string;
-    completed: boolean;
-  }
+  _id?: string;
+  task: string;
+  completed: boolean;
+  dueDate: string
+}

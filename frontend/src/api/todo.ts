@@ -12,7 +12,7 @@ export const deleteTodoAPI = async (id: string): Promise<AxiosResponse> => {
 
 export const updateTodoAPI = async (
   id: string,
-  todoData: {task:string}
+  todoData: {task:string,dueDate:string}
 ): Promise<AxiosResponse> => {
   return await axiosInstance.put(`/task/todos/${id}`, todoData);
 };

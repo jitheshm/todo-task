@@ -6,13 +6,13 @@ import mongoose from "mongoose";
 class TodoController implements ITodoController {
   async addTodo(req: Request, res: Response) {
     try {
-      let { task } = req.body;
+      let data = req.body;
       console.log(req.cookies.token)
       const decode = verifyToken(req.cookies.token as string);
       if (!decode) {
         return res.status(401).json({ error: "Unauthorized" });
       }
-      const todo = new TodoModel({ task, userId: decode.id });
+      const todo = new TodoModel({ ...data, userId: decode.id });
       await todo.save();
       res
         .status(200)
@@ -49,14 +49,14 @@ class TodoController implements ITodoController {
   async updateTodo(req: Request, res: Response) {
     try {
       let { id } = req.params;
-      let { task } = req.body;
+      let data = req.body;
       const decode = verifyToken(req.cookies.token as string);
       if (!decode) {
         return res.status(401).json({ error: "Unauthorized" });
       }
       const todo = await TodoModel.findOneAndUpdate(
         { userId: decode.id, _id: new mongoose.Types.ObjectId(id) },
-        { task },
+        data,
         { new: true }
       );
       res
